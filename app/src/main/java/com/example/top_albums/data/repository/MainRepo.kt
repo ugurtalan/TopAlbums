@@ -2,8 +2,9 @@ package com.example.top_albums.data.repository
 
 import com.example.top_albums.data.remote.api.AlbumApi
 import com.example.top_albums.domain.model.MyAlbum
+import javax.inject.Inject
 
-class MainRepo (
+class MainRepo @Inject constructor (
     private val api: AlbumApi
 )
 {

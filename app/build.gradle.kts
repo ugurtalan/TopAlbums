@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -42,6 +45,21 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+
+    // 3. Hilt Android
+    implementation("com.google.dagger:hilt-android:2.50")
+    implementation(libs.androidx.compose.foundation.layout)
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+
+    // If you use ViewModels (which we discussed for your MVVM logic)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
