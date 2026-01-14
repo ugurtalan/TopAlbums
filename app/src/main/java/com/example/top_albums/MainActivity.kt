@@ -9,9 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.top_albums.navigation.AppCoordinator
 import com.example.top_albums.ui.screens.ListScreen.ListScreen
+import com.example.top_albums.ui.screens.SplashScreen.SplashScreen
 import com.example.top_albums.ui.theme.Top_AlbumsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,9 +27,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Top_AlbumsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            val navController = rememberNavController()
+            val coordinator = remember {
+                AppCoordinator(navController)
+            }
+
+            NavHost(
+                navController = navController,
+                startDestination = "splash"
+            ) {
+
+                composable("list") {
                     ListScreen()
+                }
+
+                composable("splash"){
+                    SplashScreen({coordinator.openList()})
                 }
             }
         }
