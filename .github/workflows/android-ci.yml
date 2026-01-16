@@ -1,0 +1,47 @@
+name: Android CI/CD Pipeline
+
+# Tetikleyiciler: Hangi olaylar gerçekleştiğinde bu süreç başlasın?
+on:
+  push:
+    branches: [ "main", "feature/navigation" ]
+  pull_request:
+    branches: [ "main", "feature/navigation" ]
+
+jobs:
+  build:
+    # GitHub'ın en güncel Linux sunucusunu kullanıyoruz
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Adım: Kodunu sanal makineye indir
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Adım: Java 17 Kurulumu (Android için standart sürüm)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          # Cache özelliği: Bağımlılıkları kaydederek sonraki çalışmaları hızlandırır
+          cache: gradle
+
+      # 3. Adım: Gradle dosyasını çalıştırılabilir yap
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      # 4. Adım: Birim Testlerini Çalıştır (Unit Tests)
+      # Eğer testlerin kalırsa, süreç burada durur ve GitHub sana hata verir.
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      # 5. Adım: Uygulamayı Derle (Build)
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      # 6. Adım: Çıkan APK'yı GitHub paneline yükle (Opsiyonel)
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk

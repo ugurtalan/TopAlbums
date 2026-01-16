@@ -1,15 +1,20 @@
 package com.example.top_albums.data.remote.dto
 
-data class AlbumsResponse(
+data class Response(
     val feed: Feed
 )
 
 data class Feed(
     val title: String,
-    val results: List<Album>
+    val results: List<Type>
 )
 
-data class Album (
+
+
+
+
+
+data class Type (
     val artistName: String,
     val id: String,
     val name: String,
@@ -29,3 +34,52 @@ data class Genre(
     val name: String,
     val url: String
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

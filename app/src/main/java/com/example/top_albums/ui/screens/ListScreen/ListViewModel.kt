@@ -16,31 +16,58 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val repo : MainRepo
 ) : ViewModel() {
-
+    private val albumCache = mutableMapOf<String, AlbumUi>()
     private val _state = MutableStateFlow(AlbumUi())
     val state : StateFlow<AlbumUi> = _state.asStateFlow()
 
-    fun loadAlbums(){
-            viewModelScope.launch {
-                _state.value = _state.value.copy(isLoading = true)
-
-                val result = repo.getAlbums()
 
 
-                result.onSuccess{
+    fun loadAlbums(
+        country: String,
+        type: String,
+        trait: String,
+        bottomType: String
+    ) {
+        val key = "$country-$type-$trait-$bottomType"
+
+        val cached = albumCache[key]
+        if (cached != null) {
+            Log.d("CACHE CALL" , "data has came from Cache")
+            _state.value = _state.value.copy(
+                albums = cached.albums,
+                isLoading = false
+            )
+            return
+        }
+
+
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
+
+            val result = repo.getAlbums(country,type,trait,bottomType)
+
+
+            result.onSuccess{
                     Albums ->
-                    Albums.forEach { Log.d("ALBUMT", "${it.name} - ${it.artist}")}
+                Albums.forEach { Log.d("ALBUMT", "${it.name} - ${it.artist}")}
+                _state.value = AlbumUi(
+                    isLoading = false,
+                    Albums
+
+
+                )
+                albumCache[key]  =AlbumUi(
+                    isLoading = false,
+                    Albums
+                )
+
+            }
+                .onFailure {
+                        throwable ->
                     _state.value = AlbumUi(
                         isLoading = false,
-                        Albums
-                    )
+                        error = throwable.message )
                 }
-                    .onFailure {
-                            throwable ->
-                        _state.value = AlbumUi(
-                            isLoading = false,
-                            error = throwable.message )
-                    }
-            }
+        }
     }
 }

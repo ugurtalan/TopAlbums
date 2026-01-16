@@ -8,9 +8,14 @@ class MainRepo @Inject constructor (
     private val api: AlbumApi
 )
 {
-    suspend fun getAlbums() : Result<List<MyAlbum>>{
+    suspend fun getAlbums(
+        country:String,
+        type:String,
+        trait:String,
+        bottomType:String
+    ) : Result<List<MyAlbum>>{
         return try {
-            val response = api.getTopAlbums()
+            val response = api.getTopAlbums(country,type,trait,bottomType)
             val albums = response.feed.results.map { dto ->
                 MyAlbum(
                     id = dto.id,
