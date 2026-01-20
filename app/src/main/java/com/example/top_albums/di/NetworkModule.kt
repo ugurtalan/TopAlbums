@@ -1,6 +1,8 @@
 package com.example.top_albums.di
 
+import androidx.navigation.NavController
 import com.example.top_albums.data.remote.api.AlbumApi
+import com.example.top_albums.navigation.AppCoordinator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,4 +41,8 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): AlbumApi {
         return retrofit.create(AlbumApi::class.java)
     }
+
+
+
+
 }

@@ -20,6 +20,13 @@ class ListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AlbumUi())
     val state : StateFlow<AlbumUi> = _state.asStateFlow()
 
+    val countries = mapOf<String,String>(
+        "Türkiye" to "tr",
+        "Argentina" to "ar",
+        "Ukraine" to "ua",
+        "Belgium" to "be",
+        "Azerbaijan" to "az"
+        )
 
 
     fun loadAlbums(
@@ -28,7 +35,9 @@ class ListViewModel @Inject constructor(
         trait: String,
         bottomType: String
     ) {
-        val key = "$country-$type-$trait-$bottomType"
+
+        val Country = countries[country]?:"tr"
+        val key = "$Country-$type-$trait-$bottomType"
 
         val cached = albumCache[key]
         if (cached != null) {
@@ -44,7 +53,7 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
 
-            val result = repo.getAlbums(country,type,trait,bottomType)
+            val result = repo.getAlbums(Country,type,trait,bottomType)
 
 
             result.onSuccess{

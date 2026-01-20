@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.top_albums.navigation.AppCoordinator
 import com.example.top_albums.ui.screens.ListScreen.ListScreen
 import com.example.top_albums.ui.screens.SplashScreen.SplashScreen
+import com.example.top_albums.ui.screens.SplashScreen.SplashScreenRouter
 import com.example.top_albums.ui.theme.Top_AlbumsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,8 +29,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            val coordinator = remember {
-                AppCoordinator(navController)
+            val coordinator = remember { AppCoordinator(navController) }
+            val SplashScreenRouter = remember {
+                SplashScreenRouter(coordinator)
             }
 
             NavHost(
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable("splash"){
-                    SplashScreen({coordinator.openList()})
+                    SplashScreen(SplashScreenRouter)
                 }
             }
         }

@@ -2,31 +2,25 @@ package com.example.top_albums.ui.screens.ListScreen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,15 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.top_albums.domain.model.AlbumUi
 import com.example.top_albums.domain.model.Choices
 
-import com.example.top_albums.domain.model.MyAlbum
-import coil.compose.AsyncImage
 
 
 @Composable
@@ -59,7 +48,7 @@ fun ListScreen(
 
     LaunchedEffect(searchState , Unit) {
 
-        viewModel.loadAlbums(choicesState.country,choicesState.type,choicesState.trait,choicesState.bottomType)
+        viewModel.loadAlbums(choicesState.country,choicesState.type.lowercase(),choicesState.trait.lowercase(),choicesState.bottomType.lowercase())
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -93,14 +82,14 @@ fun ListScreen(
 
 
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(horizontal = 12.dp).safeDrawingPadding(),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
 
                     Row(modifier = Modifier.fillMaxWidth()) {
                         MyDropdown(
                             label = "Country",
-                            options = listOf("tr", "ar", "ua", "be" ,"az"),
+                            options = listOf("Türkiye", "Argentina", "Ukraine", "Belgium" ,"Azerbaijan"),
                             selectedOption = choicesState.country,
                             onOptionSelected = {
                                 choicesState = choicesState.copy(country = it)
@@ -113,16 +102,16 @@ fun ListScreen(
                             selectedOption = choicesState.type,
                             onOptionSelected = {
                                 choicesState = choicesState.copy(
-                                    type = it.lowercase(),
-                                    trait = when (it.lowercase()) {
-                                        "music" -> "most-played"
-                                        "apps", "books" -> "top-paid"
+                                    type = it,
+                                    trait = when (it) {
+                                        "Music" -> "Most-Played"
+                                        "Apps", "Books" -> "Top-Paid"
                                         else -> ""
                                     },
-                                    bottomType = when (it.lowercase()){
-                                        "music"-> "albums"
-                                        "apps" ->"apps"
-                                        "books" -> "books"
+                                    bottomType = when (it){
+                                        "Music"-> "Albums"
+                                        "Apps" ->"Apps"
+                                        "Books" -> "Books"
                                         else ->    ""
                                     }
 
@@ -139,17 +128,17 @@ fun ListScreen(
                     Row(modifier = Modifier.fillMaxWidth()) {
                         MyDropdown(
                             label = "Trait",
-                            options = if (choicesState.type=="apps" || choicesState.type=="books") listOf("Top-Free","Top-Paid") else listOf("most-played"),
+                            options = if (choicesState.type=="Apps" || choicesState.type=="Books") listOf("Top-Free","Top-Paid") else listOf("Most-Played"),
                             selectedOption = choicesState.trait,
-                            onOptionSelected = { choicesState = choicesState.copy(trait = it.lowercase()) },
+                            onOptionSelected = { choicesState = choicesState.copy(trait = it) },
                             modifier = Modifier.weight(1f)
                         )
                         MyDropdown(
                             label = "Bottom Type",
-                            options = if(choicesState.type =="music") listOf("Album" , "Songs") else listOf(""),
+                            options = if(choicesState.type =="Music") listOf("Albums" , "Songs") else listOf(""),
                             selectedOption = choicesState.bottomType,
                             onOptionSelected = {choicesState = choicesState.copy(
-                                bottomType = it.lowercase()
+                                bottomType = it
                             ) },
                             modifier = Modifier.weight(1f)
                         )
@@ -173,12 +162,12 @@ fun ListScreen(
 
 
                     LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
 
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(state.albums) { album ->
-                            AlbumCard(album)
+                        itemsIndexed(state.albums) { index,album ->
+                            AlbumCard(album,index+1)
                         }
                     }
                 }
@@ -192,10 +181,10 @@ fun ListScreen(
 
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("No albums found" ,style = MaterialTheme.typography.titleLarge)
+                    Text("No data found" ,style = MaterialTheme.typography.titleLarge)
                     Button(onClick = {
-                        choicesState = Choices("tr","music","most-played", "albums")
-                        viewModel.loadAlbums("tr","music","most-played", "albums")})
+                        choicesState = Choices("Türkiye","Music","Most-Played", "Albums")
+                        viewModel.loadAlbums("Türkiye","music","most-played", "albums")})
                     {
                         Icon(
                             imageVector = Icons.Default.Refresh,

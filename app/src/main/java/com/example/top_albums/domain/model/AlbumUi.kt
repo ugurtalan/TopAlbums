@@ -7,8 +7,10 @@ data class AlbumUi(
 )
 
 data class Choices(
-    val country : String = "tr",
-    val type : String = "music",
-    val trait : String = "most-played",
-    val bottomType: String = "albums"
+    val country : String = "Türkiye",
+    val type : String = "Music",
+    val trait : String = "Most-Played",
+    val bottomType: String = "Albums"
 )
+
+

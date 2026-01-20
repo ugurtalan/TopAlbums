@@ -16,6 +16,9 @@ class MainRepo @Inject constructor (
     ) : Result<List<MyAlbum>>{
         return try {
             val response = api.getTopAlbums(country,type,trait,bottomType)
+
+
+
             val albums = response.feed.results.map { dto ->
                 MyAlbum(
                     id = dto.id,
@@ -28,6 +31,7 @@ class MainRepo @Inject constructor (
             Result.success(albums)
 
         } catch (e: Exception) {
+
             Result.failure(e)
         }
     }

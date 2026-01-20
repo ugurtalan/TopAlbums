@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SplashScreen(
-    onContinueClick: () -> Unit
+    router: SplashScreenRouter
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -29,7 +29,7 @@ fun SplashScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = { onContinueClick() },
+        Button(onClick = { router.routeList("list") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.onSurface,
 

@@ -6,14 +6,8 @@ class AppCoordinator(
     private val navController: NavHostController
 )  {
 
-     fun openList() {
-        navController.navigate("list"){
-            popUpTo("splash"){
-                inclusive = true
-            }
-        }
-
-
+     fun navigate(route:String) {
+        navController.navigate(route)
     }
 
 
