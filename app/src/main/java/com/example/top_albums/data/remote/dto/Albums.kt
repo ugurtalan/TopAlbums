@@ -9,11 +9,6 @@ data class Feed(
     val results: List<Type>
 )
 
-
-
-
-
-
 data class Type (
     val artistName: String,
     val id: String,

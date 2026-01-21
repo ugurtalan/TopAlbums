@@ -29,7 +29,7 @@ fun SplashScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = { router.routeList("list") },
+        Button(onClick = { router.route("list") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.onSurface,
 

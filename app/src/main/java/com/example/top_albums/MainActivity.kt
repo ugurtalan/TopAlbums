@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.top_albums.navigation.AppCoordinator
 import com.example.top_albums.ui.screens.ListScreen.ListScreen
+import com.example.top_albums.ui.screens.ListScreen.ListScreenController
 import com.example.top_albums.ui.screens.SplashScreen.SplashScreen
 import com.example.top_albums.ui.screens.SplashScreen.SplashScreenRouter
 import com.example.top_albums.ui.theme.Top_AlbumsTheme
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
             ) {
 
                 composable("list") {
-                    ListScreen()
+                    ListScreenController()
                 }
 
                 composable("splash"){

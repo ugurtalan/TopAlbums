@@ -5,7 +5,7 @@ import com.example.top_albums.navigation.AppCoordinator
 class SplashScreenRouter(
    private val coordinator : AppCoordinator
 ){
-    fun routeList(route: String){
+    fun route(route: String){
         coordinator.navigate(route)
     }
 }

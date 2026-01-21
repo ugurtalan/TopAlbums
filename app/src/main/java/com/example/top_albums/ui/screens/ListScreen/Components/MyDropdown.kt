@@ -1,6 +1,5 @@
-package com.example.top_albums.ui.screens.ListScreen
+package com.example.top_albums.ui.screens.ListScreen.Components
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
